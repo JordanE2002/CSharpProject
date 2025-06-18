@@ -1,0 +1,42 @@
+﻿@page
+@model CSharpProject.Pages.CompaniesFolder.CreateCompanyModel
+@{
+    ViewData["Title"] = "Create Company";
+}
+
+<h1>Create New Company</h1>
+
+<form method="post" enctype="multipart/form-data">
+    <validation-summary asp-validation-summary="All" class="text-danger"></validation-summary>
+
+    <div class="mb-3">
+        <label asp-for="Company.Name" class="form-label"></label>
+        <input asp-for="Company.Name" class="form-control" />
+        <span asp-validation-for="Company.Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Company.Email" class="form-label"></label>
+        <input asp-for="Company.Email" class="form-control" />
+        <span asp-validation-for="Company.Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Company.Website" class="form-label"></label>
+        <input asp-for="Company.Website" class="form-control" />
+        <span asp-validation-for="Company.Website" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="LogoFile" class="form-label">Company Logo (min 100x100)</label>
+        <input asp-for="LogoFile" type="file" class="form-control" accept="image/*" />
+        <span asp-validation-for="LogoFile" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-page="/Companies" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,88 @@
+﻿@page
+@model CSharpProject.Pages.CompaniesModel
+@{
+    ViewData["Title"] = "Companies";
+}
+
+<h1 class="mb-4">Companies</h1>
+
+<a asp-page="/CompaniesFolder/CreateCompany" class="btn btn-success mb-4">Add New Company</a>
+
+<!-- Sort Buttons -->
+<div class="mb-3">
+    <a asp-page="/Companies" asp-route-sortOrder="name_asc"
+       asp-route-pageNumber="1"
+       class="btn btn-sm @(Model.SortOrder == "name_asc" || string.IsNullOrEmpty(Model.SortOrder) ? "btn-primary" : "btn-outline-primary")">
+        Sort A–Z
+    </a>
+    <a asp-page="/Companies" asp-route-sortOrder="name_desc"
+       asp-route-pageNumber="1"
+       class="btn btn-sm @(Model.SortOrder == "name_desc" ? "btn-primary" : "btn-outline-primary")">
+        Sort Z–A
+    </a>
+</div>
+
+@if (Model.Companies.Any())
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var company in Model.Companies)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        @if (!string.IsNullOrEmpty(company.Logo))
+                        {
+                            <img src="@company.Logo" alt="@company.Name Logo"
+                                 class="mb-3"
+                                 style="max-width: 150px; max-height: 150px; object-fit: contain;" />
+                        }
+                        <h5 class="card-title">@company.Name</h5>
+                        <p class="card-text">
+                            <strong>Email:</strong> @company.Email<br />
+                            <strong>Website:</strong> <a href="@company.Website" target="_blank">@company.Website</a>
+                        </p>
+                        <div class="d-flex justify-content-between">
+                            <a asp-page="/CompaniesFolder/UpdateCompany" asp-route-id="@company.Id" class="btn btn-primary btn-sm">Edit</a>
+                            <a asp-page="/CompaniesFolder/DeleteCompany" asp-route-id="@company.Id" class="btn btn-danger btn-sm">Delete</a>
+                        </div>
+                        <div class="mt-2 text-center">
+                            <a asp-page="/CompaniesFolder/ViewEmployees" asp-route-companyId="@company.Id" class="btn btn-info btn-sm">View Employees</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Pagination -->
+    @if (Model.TotalPages > 1)
+    {
+        <nav aria-label="Company pagination">
+            <ul class="pagination justify-content-center mt-4">
+                <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                    <a class="page-link" asp-page="/Companies" asp-route-pageNumber="@(Model.PageNumber - 1)" asp-route-sortOrder="@Model.SortOrder" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(Model.PageNumber == i ? "active" : "")">
+                        <a class="page-link" asp-page="/Companies" asp-route-pageNumber="@i" asp-route-sortOrder="@Model.SortOrder">@i</a>
+                    </li>
+                }
+
+                <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
+                    <a class="page-link" asp-page="/Companies" asp-route-pageNumber="@(Model.PageNumber + 1)" asp-route-sortOrder="@Model.SortOrder" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    }
+}
+else
+{
+    <p><em>No companies found.</em></p>
+}
+

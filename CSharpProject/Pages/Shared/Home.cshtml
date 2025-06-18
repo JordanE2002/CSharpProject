@@ -1,0 +1,62 @@
+﻿@page "/Home"
+@model CSharpProject.Pages.HomeModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<h1 class="mb-4">Companies & Employees</h1>
+
+@if (Model.Companies.Any())
+{
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        @foreach (var company in Model.Companies)
+        {
+            <div class="col">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">@company.Name</h4>
+                        <p class="card-text">
+                            <strong>Email:</strong> @company.Email<br />
+                            <strong>Website:</strong> <a href="@company.Website" target="_blank">@company.Website</a><br />
+                            @if (!string.IsNullOrEmpty(company.Logo))
+                            {
+                                <strong>Logo:</strong>
+
+                                <br />
+                                <img src="@company.Logo" alt="@company.Name Logo" style="max-width: 150px; max-height: 150px; object-fit: contain;" />
+                            }
+                        </p>
+
+                        <h6 class="mt-4">Employees</h6>
+
+                        @if (company.Employees.Any())
+                        {
+                            <div class="row row-cols-1 row-cols-md-1 g-2">
+                                @foreach (var employee in company.Employees)
+                                {
+                                    <div class="col">
+                                        <div class="card border-0 bg-light px-3 py-2">
+                                            <div class="card-body p-0">
+                                                <strong>@employee.FirstName @employee.LastName</strong><br />
+                                                <small>Email: @employee.Email</small><br />
+                                                <small>Phone: @employee.PhoneNumber</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted"><em>No employees.</em></p>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p><em>No companies found.</em></p>
+}

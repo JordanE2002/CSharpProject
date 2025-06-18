@@ -1,0 +1,50 @@
+﻿@page "{id:int}"
+@model CSharpProject.Pages.EmployeesFolder.UpdateEmployeeModel
+@{
+    ViewData["Title"] = "Update Employee";
+}
+
+<h1>Update Employee</h1>
+
+<form method="post">
+    <input type="hidden" asp-for="Employee.Id" />
+
+    <div class="mb-3">
+        <label asp-for="Employee.FirstName" class="form-label"></label>
+        <input asp-for="Employee.FirstName" class="form-control" />
+        <span asp-validation-for="Employee.FirstName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Employee.LastName" class="form-label"></label>
+        <input asp-for="Employee.LastName" class="form-control" />
+        <span asp-validation-for="Employee.LastName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Employee.Email" class="form-label"></label>
+        <input asp-for="Employee.Email" class="form-control" />
+        <span asp-validation-for="Employee.Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Employee.PhoneNumber" class="form-label"></label>
+        <input asp-for="Employee.PhoneNumber" class="form-control" />
+        <span asp-validation-for="Employee.PhoneNumber" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Employee.CompanyId" class="form-label">Company</label>
+        <select asp-for="Employee.CompanyId" asp-items="Model.Companies" class="form-control">
+            <option value="">-- Select Company --</option>
+        </select>
+        <span asp-validation-for="Employee.CompanyId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a asp-page="/Employees" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,79 @@
+﻿@page
+@model CSharpProject.Pages.EmployeesModel
+@{
+    ViewData["Title"] = "Employees";
+}
+
+<h1 class="mb-4">Employees</h1>
+
+<a asp-page="/EmployeesFolder/CreateEmployee" class="btn btn-success mb-4">Add New Employee</a>
+
+<!-- Sort Buttons -->
+<div class="mb-3">
+    <a asp-page="/Employees" asp-route-sortOrder="name_asc"
+       asp-route-pageNumber="1"
+       class="btn btn-sm @(Model.SortOrder == "name_asc" || string.IsNullOrEmpty(Model.SortOrder) ? "btn-primary" : "btn-outline-primary")">
+        Sort A–Z
+    </a>
+    <a asp-page="/Employees" asp-route-sortOrder="name_desc"
+       asp-route-pageNumber="1"
+       class="btn btn-sm @(Model.SortOrder == "name_desc" ? "btn-primary" : "btn-outline-primary")">
+        Sort Z–A
+    </a>
+</div>
+
+@if (Model.Employees.Any())
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var employee in Model.Employees)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">@employee.FirstName @employee.LastName</h5>
+                        <p class="card-text">
+                            <strong>Email:</strong> @employee.Email<br />
+                            <strong>Phone:</strong> @employee.PhoneNumber<br />
+                            <strong>Company:</strong> @employee.Company?.Name
+                        </p>
+                        <div class="d-flex justify-content-between">
+                            <a asp-page="/EmployeesFolder/UpdateEmployee" asp-route-id="@employee.Id" class="btn btn-primary btn-sm">Edit</a>
+                            <a asp-page="/EmployeesFolder/DeleteEmployee" asp-route-id="@employee.Id" class="btn btn-danger btn-sm">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @* Pagination *@
+    @if (Model.TotalPages > 1)
+    {
+        <nav aria-label="Employee pagination">
+            <ul class="pagination justify-content-center mt-4">
+                <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                    <a class="page-link" asp-page="/Employees" asp-route-pageNumber="@(Model.PageNumber - 1)" asp-route-sortOrder="@Model.SortOrder" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(Model.PageNumber == i ? "active" : "")">
+                        <a class="page-link" asp-page="/Employees" asp-route-pageNumber="@i" asp-route-sortOrder="@Model.SortOrder">@i</a>
+                    </li>
+                }
+
+                <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
+                    <a class="page-link" asp-page="/Employees" asp-route-pageNumber="@(Model.PageNumber + 1)" asp-route-sortOrder="@Model.SortOrder" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    }
+}
+else
+{
+    <p><em>No employees found.</em></p>
+}
