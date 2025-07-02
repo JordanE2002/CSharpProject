@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using CSharpProject.Data;
 using EmployeeModel = CSharpProject.Models.Employee;  // alias to fix conflict
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace CSharpProject.Pages.EmployeesFolder  // matches folder structure
 {
@@ -26,7 +28,7 @@ namespace CSharpProject.Pages.EmployeesFolder  // matches folder structure
             Companies = new SelectList(_context.Companies.ToList(), "Id", "Name");
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
             Companies = new SelectList(_context.Companies.ToList(), "Id", "Name");
 
@@ -35,8 +37,18 @@ namespace CSharpProject.Pages.EmployeesFolder  // matches folder structure
                 return Page();
             }
 
+            // ✅ Check for existing email (case-insensitive)
+            var emailExists = await _context.Employees
+                .AnyAsync(e => e.Email.ToLower() == Employee.Email.ToLower());
+
+            if (emailExists)
+            {
+                ModelState.AddModelError("Employee.Email", "An employee with this email already exists.");
+                return Page();
+            }
+
             _context.Employees.Add(Employee);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return RedirectToPage("/Employees");
         }
     }

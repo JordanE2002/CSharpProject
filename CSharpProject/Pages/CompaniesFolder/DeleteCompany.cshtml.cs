@@ -19,6 +19,8 @@ namespace CSharpProject.Pages.CompaniesFolder
         [BindProperty]
         public Company Company { get; set; }
 
+        public bool HasEmployees { get; set; }
+
         public IActionResult OnGet(int id)
         {
             Company = _context.Companies.FirstOrDefault(c => c.Id == id);
@@ -26,26 +28,29 @@ namespace CSharpProject.Pages.CompaniesFolder
             {
                 return RedirectToPage("/Companies");
             }
+
+            HasEmployees = _context.Employees.Any(e => e.CompanyId == Company.Id);
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            // Find the company
             var company = await _context.Companies.FindAsync(Company.Id);
             if (company == null)
             {
                 return RedirectToPage("/Companies");
             }
 
-            // Get and delete all employees linked to this company
-            var employees = _context.Employees.Where(e => e.CompanyId == company.Id);
-            _context.Employees.RemoveRange(employees);
+            var hasEmployees = _context.Employees.Any(e => e.CompanyId == company.Id);
+            if (hasEmployees)
+            {
+                ModelState.AddModelError(string.Empty, "Cannot delete this company while it has assigned employees. Please remove or reassign them first.");
+                Company = company; // Rebind to show on form again
+                HasEmployees = true;
+                return Page();
+            }
 
-            // Delete the company
             _context.Companies.Remove(company);
-
-            // Commit changes to the database
             await _context.SaveChangesAsync();
 
             return RedirectToPage("/Companies");

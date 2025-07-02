@@ -6,7 +6,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Home</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -18,15 +18,22 @@
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">Home</a>
 
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <!-- Toggler/collapsible Button -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Collapsible menu -->
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link @(currentPath.StartsWithSegments("/Employees") ? "active text-primary fw-bold" : "text-dark")"
-                               asp-area="" asp-page="/Employees">Employees Page</a>
+                               asp-area="" asp-page="/Employees">Employees</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link @(currentPath.StartsWithSegments("/Companies") ? "active text-primary fw-bold" : "text-dark")"
-                               asp-area="" asp-page="/Companies">Companies Page</a>
+                               asp-area="" asp-page="/Companies">Companies</a>
                         </li>
                     </ul>
                 </div>

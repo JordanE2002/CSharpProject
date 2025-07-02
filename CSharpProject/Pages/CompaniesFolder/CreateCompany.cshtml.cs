@@ -4,6 +4,7 @@ using CSharpProject.Data;
 using CSharpProject.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
@@ -32,7 +33,6 @@ namespace CSharpProject.Pages.CompaniesFolder
 
         public async Task<IActionResult> OnPostAsync()
         {
-            // Breakpoint #1 - Check ModelState validity here
             if (!ModelState.IsValid)
             {
                 var errors = new StringBuilder();
@@ -57,9 +57,19 @@ namespace CSharpProject.Pages.CompaniesFolder
                 return Page();
             }
 
+            // ✅ Email uniqueness check
+            var existingCompany = await _context.Companies
+                .FirstOrDefaultAsync(c => c.Email.ToLower() == Company.Email.ToLower());
+
+            if (existingCompany != null)
+            {
+                ModelState.AddModelError("Company.Email", "A company with this email already exists.");
+                return Page();
+            }
+
             try
             {
-                // Breakpoint #2 - Before image validation
+                // Validate image dimensions
                 using var image = Image.FromStream(LogoFile.OpenReadStream());
                 if (image.Width < 100 || image.Height < 100)
                 {
@@ -67,16 +77,15 @@ namespace CSharpProject.Pages.CompaniesFolder
                     return Page();
                 }
 
+                // Save image
                 var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Uploads", "Images");
                 Directory.CreateDirectory(uploadsFolder);
 
                 var uniqueFileName = Path.GetFileNameWithoutExtension(LogoFile.FileName)
-                    + "_"
-                    + Path.GetRandomFileName().Replace(".", "")
+                    + "_" + Path.GetRandomFileName().Replace(".", "")
                     + Path.GetExtension(LogoFile.FileName);
 
                 var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     await LogoFile.CopyToAsync(fileStream);
@@ -84,11 +93,9 @@ namespace CSharpProject.Pages.CompaniesFolder
 
                 Company.Logo = $"/Uploads/Images/{uniqueFileName}";
 
-                // Breakpoint #3 - Before saving to DB
                 _context.Companies.Add(Company);
                 await _context.SaveChangesAsync();
 
-                // Breakpoint #4 - After successful save
                 return RedirectToPage("/Companies");
             }
             catch (System.Exception ex)
