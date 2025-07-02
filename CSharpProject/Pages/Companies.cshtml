@@ -24,34 +24,43 @@
 
 @if (Model.Companies.Any())
 {
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        @foreach (var company in Model.Companies)
-        {
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body text-center">
-                        @if (!string.IsNullOrEmpty(company.Logo))
-                        {
-                            <img src="@company.Logo" alt="@company.Name Logo"
-                                 class="mb-3"
-                                 style="max-width: 150px; max-height: 150px; object-fit: contain;" />
-                        }
-                        <h5 class="card-title">@company.Name</h5>
-                        <p class="card-text">
-                            <strong>Email:</strong> @company.Email<br />
-                            <strong>Website:</strong> <a href="@company.Website" target="_blank">@company.Website</a>
-                        </p>
-                        <div class="d-flex justify-content-between">
-                            <a asp-page="/CompaniesFolder/UpdateCompany" asp-route-id="@company.Id" class="btn btn-primary btn-sm">Edit</a>
-                            <a asp-page="/CompaniesFolder/DeleteCompany" asp-route-id="@company.Id" class="btn btn-danger btn-sm">Delete</a>
-                        </div>
-                        <div class="mt-2 text-center">
-                            <a asp-page="/CompaniesFolder/ViewEmployees" asp-route-companyId="@company.Id" class="btn btn-info btn-sm">View Employees</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Logo</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Website</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var company in Model.Companies)
+                {
+                    <tr>
+                        <td style="width: 80px;">
+                            @if (!string.IsNullOrEmpty(company.Logo))
+                            {
+                                <img src="@company.Logo" alt="@company.Name Logo" style="max-height: 50px; max-width: 50px; object-fit: contain;" />
+                            }
+                        </td>
+                        <td>@company.Name</td>
+                        <td>@company.Email</td>
+                        <td>
+                            <a href="@company.Website" target="_blank" rel="noopener noreferrer">
+                                @company.Website
+                            </a>
+                        </td>
+                        <td class="text-end" style="white-space: nowrap;">
+                            <a asp-page="/CompaniesFolder/ViewEmployees" asp-route-companyId="@company.Id" class="btn btn-info btn-sm me-1" title="View Employees">View</a>
+                            <a asp-page="/CompaniesFolder/UpdateCompany" asp-route-id="@company.Id" class="btn btn-primary btn-sm me-1" title="Edit Company">Edit</a>
+                            <a asp-page="/CompaniesFolder/DeleteCompany" asp-route-id="@company.Id" class="btn btn-danger btn-sm" title="Delete Company">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 
     <!-- Pagination -->
@@ -85,4 +94,3 @@ else
 {
     <p><em>No companies found.</em></p>
 }
-

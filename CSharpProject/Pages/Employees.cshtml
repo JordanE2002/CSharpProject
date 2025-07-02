@@ -24,29 +24,36 @@
 
 @if (Model.Employees.Any())
 {
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        @foreach (var employee in Model.Employees)
-        {
-            <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">@employee.FirstName @employee.LastName</h5>
-                        <p class="card-text">
-                            <strong>Email:</strong> @employee.Email<br />
-                            <strong>Phone:</strong> @employee.PhoneNumber<br />
-                            <strong>Company:</strong> @employee.Company?.Name
-                        </p>
-                        <div class="d-flex justify-content-between">
-                            <a asp-page="/EmployeesFolder/UpdateEmployee" asp-route-id="@employee.Id" class="btn btn-primary btn-sm">Edit</a>
-                            <a asp-page="/EmployeesFolder/DeleteEmployee" asp-route-id="@employee.Id" class="btn btn-danger btn-sm">Delete</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Company</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var employee in Model.Employees)
+                {
+                    <tr>
+                        <td>@employee.FirstName @employee.LastName</td>
+                        <td>@employee.Email</td>
+                        <td>@employee.PhoneNumber</td>
+                        <td>@employee.Company?.Name</td>
+                        <td class="text-end" style="white-space: nowrap;">
+                            <a asp-page="/EmployeesFolder/UpdateEmployee" asp-route-id="@employee.Id" class="btn btn-primary btn-sm me-1" title="Edit Employee">Edit</a>
+                            <a asp-page="/EmployeesFolder/DeleteEmployee" asp-route-id="@employee.Id" class="btn btn-danger btn-sm" title="Delete Employee">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 
-    @* Pagination *@
+    <!-- Pagination -->
     @if (Model.TotalPages > 1)
     {
         <nav aria-label="Employee pagination">
