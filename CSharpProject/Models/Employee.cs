@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace CSharpProject.Models
 {
@@ -22,7 +21,6 @@ namespace CSharpProject.Models
         [Required(ErrorMessage = "Please select a company.")]
         public int CompanyId { get; set; }
 
-        [ValidateNever]
         public Company Company { get; set; }
 
 
