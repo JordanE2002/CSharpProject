@@ -6,59 +6,63 @@
 
 <h1 class="mb-4">Dashboard</h1>
 
+<!-- Action Cards -->
 <div class="row g-4 mb-4">
     <!-- Company Card -->
-    <div class="col-md-6">
-        <div class="card shadow-sm h-100">
+    <div class="col-12 col-md-6">
+        <div class="card shadow-sm h-100 bg-card">
             <div class="card-body">
                 <h4 class="card-title">Companies</h4>
                 <p class="card-text">Manage your companies: view, create, edit, or delete company details.</p>
-                <a asp-page="/Companies" class="btn btn-primary me-2">View Companies</a>
-                <a asp-page="/CompaniesFolder/CreateCompany" class="btn btn-success">Add New Company</a>
+                <a asp-page="/Companies" class="btn btn-primary me-2 mb-2">View Companies</a>
+                <a asp-page="/CompaniesFolder/CreateCompany" class="btn btn-success mb-2">Add New Company</a>
             </div>
         </div>
     </div>
 
     <!-- Employee Card -->
-    <div class="col-md-6">
-        <div class="card shadow-sm h-100">
+    <div class="col-12 col-md-6">
+        <div class="card shadow-sm h-100 bg-card">
             <div class="card-body">
                 <h4 class="card-title">Employees</h4>
                 <p class="card-text">Manage employees: view all employees or add new ones quickly.</p>
-                <a asp-page="/Employees" class="btn btn-primary me-2">View Employees</a>
-                <a asp-page="/EmployeesFolder/CreateEmployee" class="btn btn-success">Add New Employee</a>
+                <a asp-page="/Employees" class="btn btn-primary me-2 mb-2">View Employees</a>
+                <a asp-page="/EmployeesFolder/CreateEmployee" class="btn btn-success mb-2">Add New Employee</a>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Latest Entries -->
 <div class="row g-4">
     <!-- Latest Companies -->
-    <div class="col-md-6">
+    <div class="col-12 col-lg-6">
         <div class="card shadow-sm h-100">
             <div class="card-body">
                 <h5 class="card-title">Latest Companies</h5>
                 @if (Model.LatestCompanies.Any())
                 {
-                    <table class="table table-sm table-hover mb-0">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Website</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var company in Model.LatestCompanies)
-                            {
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover mb-0">
+                            <thead>
                                 <tr>
-                                    <td>@company.Name</td>
-                                    <td>@company.Email</td>
-                                    <td><a href="@company.Website" target="_blank">@company.Website</a></td>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Website</th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach (var company in Model.LatestCompanies)
+                                {
+                                    <tr>
+                                        <td>@company.Name</td>
+                                        <td>@company.Email</td>
+                                        <td><a href="@company.Website" target="_blank">@company.Website</a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 }
                 else
                 {
@@ -69,31 +73,33 @@
     </div>
 
     <!-- Latest Employees -->
-    <div class="col-md-6">
+    <div class="col-12 col-lg-6">
         <div class="card shadow-sm h-100">
             <div class="card-body">
                 <h5 class="card-title">Latest Employees</h5>
                 @if (Model.LatestEmployees.Any())
                 {
-                    <table class="table table-sm table-hover mb-0">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Company</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var emp in Model.LatestEmployees)
-                            {
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover mb-0">
+                            <thead>
                                 <tr>
-                                    <td>@emp.FirstName @emp.LastName</td>
-                                    <td>@emp.Email</td>
-                                    <td>@emp.Company?.Name</td>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Company</th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach (var emp in Model.LatestEmployees)
+                                {
+                                    <tr>
+                                        <td>@emp.FirstName @emp.LastName</td>
+                                        <td>@emp.Email</td>
+                                        <td>@emp.Company?.Name</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 }
                 else
                 {
@@ -103,3 +109,4 @@
         </div>
     </div>
 </div>
+

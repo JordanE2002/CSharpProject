@@ -18,5 +18,71 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: #0ABAB5
+}
+
+
+
+.bg-nav {
+    background-color: #F5F5DC;
+    border-color: black !important;
+}
+
+.bg-card {
+    background-color: #F5F5DC;
+}
+
+
+.bg-button {
+    background-color: #56DFCF !important;
+    border-color: ##0ABAB5 !important;
+    color: black;
+}
+
+    .bg-button:hover,
+    .bg-button:focus {
+        background-color: #0ABAB5 !important; /* a darker shade on hover */
+        border-color: #56DFCF !important;
+        color: black;
+    }
+
+
+.bg-button2 {
+    background-color: #ADEED9 !important;
+    border-color: #0ABAB5 !important;
+    color: black;
+}
+
+    .bg-button2:hover,
+    .bg-button2:focus {
+        background-color: #ADEED9 !important; /* a darker shade on hover */
+        border-color: #56DFCF !important;
+        color: black;
+    }
+
+    table {
+  background-color: white; /* keep it clean */
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+table thead {
+  background-color: #0ABAB5; /* teal header */
+  color: white;
+  font-weight: bold;
+}
+
+table tbody tr:nth-child(odd) {
+  background-color: #E0F7F7; /* light teal stripes */
+}
+
+table tbody tr:hover {
+  background-color: #B2DFDB; /* darker teal on hover */
+}
+
+table th, table td {
+  border: 1px solid #ddd;
+  padding: 8px 12px;
 }

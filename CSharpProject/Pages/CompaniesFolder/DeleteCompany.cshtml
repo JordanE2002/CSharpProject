@@ -6,32 +6,48 @@
 
 <div class="container mt-5">
     <h1 class="display-5 mb-3">Delete Company</h1>
-    <h5 class="text-muted mb-4">Are you sure you want to delete this company?</h5>
+    <h5 class="text-danger mb-4">Are you sure you want to delete this company?</h5>
 
     @if (!string.IsNullOrEmpty(ViewData["ErrorMessage"] as string))
     {
         <div class="alert alert-danger">@ViewData["ErrorMessage"]</div>
     }
 
-    <div class="card shadow-sm">
+    <div class="card shadow-sm border-danger">
+        <div class="card-header bg-danger text-white">
+            Company Details
+        </div>
         <div class="card-body">
             <div class="row align-items-center">
                 <div class="col-md-8">
-                    <dl class="row">
-                        <dt class="col-sm-4">Name</dt>
-                        <dd class="col-sm-8">@Model.Company.Name</dd>
-
-                        <dt class="col-sm-4">Email</dt>
-                        <dd class="col-sm-8">@Model.Company.Email</dd>
-
-                        <dt class="col-sm-4">Website</dt>
-                        <dd class="col-sm-8">@Model.Company.Website</dd>
-                    </dl>
+                    <div class="table-responsive mb-3">
+                        <table class="table table-bordered align-middle mb-0">
+                            <tbody>
+                                <tr>
+                                    <th style="width: 180px;">Name</th>
+                                    <td>@Model.Company.Name</td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>@Model.Company.Email</td>
+                                </tr>
+                                <tr>
+                                    <th>Website</th>
+                                    <td>
+                                        <a href="@Model.Company.Website" target="_blank" rel="noopener noreferrer">
+                                            @Model.Company.Website
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="col-md-4 text-center">
                     @if (!string.IsNullOrEmpty(Model.Company.Logo))
                     {
-                        <img src="@Model.Company.Logo" alt="@Model.Company.Name Logo"
+                        <img src="@Model.Company.Logo"
+                             alt="@Model.Company.Name Logo"
                              class="img-fluid rounded border"
                              style="max-height: 150px; object-fit: contain;" />
                     }
@@ -46,9 +62,9 @@
             }
             else
             {
-                <form method="post" class="d-flex justify-content-between mt-4">
+                <form method="post" class="d-flex justify-content-end gap-2 mt-4">
                     <input type="hidden" asp-for="Company.Id" />
-                    <a asp-page="/Companies" class="btn btn-outline-secondary">Cancel</a>
+                    <a asp-page="/Companies" class="btn btn-secondary">Cancel</a>
                     <button type="submit" class="btn btn-danger">Confirm Delete</button>
                 </form>
             }

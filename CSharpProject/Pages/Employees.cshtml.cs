@@ -14,7 +14,7 @@ namespace CSharpProject.Pages
     {
         private readonly ApplicationDbContext _context;
 
-        private const int PageSize = 3; // number of employees per page
+        private const int PageSize = 6; // number of employees per page
 
         public EmployeesModel(ApplicationDbContext context)
         {

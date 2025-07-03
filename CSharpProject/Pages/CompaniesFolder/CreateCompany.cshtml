@@ -4,38 +4,44 @@
     ViewData["Title"] = "Create Company";
 }
 
-<h1>Create New Company</h1>
+<div class="container my-5 d-flex justify-content-center">
+    <div class="card shadow-sm p-4" style="max-width: 600px; width: 100%;">
+        <h2 class="card-title mb-4 text-center">Create New Company</h2>
 
-<form method="post" enctype="multipart/form-data">
-    <validation-summary asp-validation-summary="All" class="text-danger"></validation-summary>
+        <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            <validation-summary asp-validation-summary="All" class="text-danger mb-3"></validation-summary>
 
-    <div class="mb-3">
-        <label asp-for="Company.Name" class="form-label"></label>
-        <input asp-for="Company.Name" class="form-control" />
-        <span asp-validation-for="Company.Name" class="text-danger"></span>
+            <div class="form-floating mb-3">
+                <input asp-for="Company.Name" class="form-control" id="CompanyName" placeholder="Company Name" />
+                <label for="CompanyName">Company Name</label>
+                <span asp-validation-for="Company.Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Company.Email" type="email" class="form-control" id="CompanyEmail" placeholder="Email address" />
+                <label for="CompanyEmail">Email address</label>
+                <span asp-validation-for="Company.Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Company.Website" type="url" class="form-control" id="CompanyWebsite" placeholder="Website URL" />
+                <label for="CompanyWebsite">Website URL</label>
+                <span asp-validation-for="Company.Website" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="LogoFile" class="form-label">Company Logo (min 100x100)</label>
+                <input asp-for="LogoFile" type="file" class="form-control" accept="image/*" />
+                <span asp-validation-for="LogoFile" class="text-danger"></span>
+            </div>
+
+            <div class="d-flex gap-2 justify-content-center">
+                <button type="submit" class="btn btn-primary px-4">Create</button>
+                <a asp-page="/Companies" class="btn btn-outline-secondary px-4">Cancel</a>
+            </div>
+        </form>
     </div>
-
-    <div class="mb-3">
-        <label asp-for="Company.Email" class="form-label"></label>
-        <input asp-for="Company.Email" class="form-control" />
-        <span asp-validation-for="Company.Email" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Company.Website" class="form-label"></label>
-        <input asp-for="Company.Website" class="form-control" />
-        <span asp-validation-for="Company.Website" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="LogoFile" class="form-label">Company Logo (min 100x100)</label>
-        <input asp-for="LogoFile" type="file" class="form-control" accept="image/*" />
-        <span asp-validation-for="LogoFile" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Create</button>
-    <a asp-page="/Companies" class="btn btn-secondary">Cancel</a>
-</form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
