@@ -6,18 +6,39 @@
 
 <h1 class="mb-4">Employees</h1>
 
-<a asp-page="/EmployeesFolder/CreateEmployee" class="btn btn-success mb-4">Add New Employee</a>
+<div class="mb-4 d-flex gap-2">
+    <a asp-page="/EmployeesFolder/CreateEmployee" class="btn bg-button">Add New Employee</a>
+    <a asp-page="/EmployeesFolder/RestoreEmployee" class="btn bg-button2">Archived Employees</a>
+</div>
+
+
+<!-- ✅ Compact Search Form with Clear Button -->
+<form method="get" class="mb-3 d-flex align-items-center">
+    <!-- Search Input (smaller width) -->
+    <input type="text"
+           name="SearchTerm"
+           value="@Model.SearchTerm"
+           class="form-control me-2"
+           style="max-width: 250px;"
+           placeholder="Search name..." />
+
+    <!-- Search Button -->
+    <button type="submit" class="btn bg-button2 me-2">Search</button>
+
+    <!-- Clear Button -->
+    <a asp-page="/Employees" class="btn btn-secondary">Clear</a>
+</form>
 
 <!-- Sort Buttons -->
 <div class="mb-3">
     <a asp-page="/Employees" asp-route-sortOrder="name_asc"
-       asp-route-pageNumber="1"
-       class="btn btn-sm @(Model.SortOrder == "name_asc" || string.IsNullOrEmpty(Model.SortOrder) ?  "bg-card" : "bg-button")">
+       asp-route-pageNumber="1" asp-route-SearchTerm="@Model.SearchTerm"
+       class="btn btn-sm @(Model.SortOrder == "name_asc" || string.IsNullOrEmpty(Model.SortOrder) ? "bg-card" : "bg-button")">
         Sort A–Z
     </a>
     <a asp-page="/Employees" asp-route-sortOrder="name_desc"
-       asp-route-pageNumber="1"
-       class="btn btn-sm @(Model.SortOrder == "name_desc" ?  "bg-card" : "bg-button")">
+       asp-route-pageNumber="1" asp-route-SearchTerm="@Model.SearchTerm"
+       class="btn btn-sm @(Model.SortOrder == "name_desc" ? "bg-card" : "bg-button")">
         Sort Z–A
     </a>
 </div>
@@ -34,7 +55,7 @@
                             <th>Email</th>
                             <th>Phone</th>
                             <th>Company</th>
-                            <th class="text-end">Actions</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,10 +65,18 @@
                                 <td>@employee.FirstName @employee.LastName</td>
                                 <td>@employee.Email</td>
                                 <td>@employee.PhoneNumber</td>
-                                <td>@employee.Company?.Name</td>
-                                <td class="text-end" style="white-space: nowrap;">
-                                    <a asp-page="/EmployeesFolder/UpdateEmployee" asp-route-id="@employee.Id" class="btn btn-primary btn-sm me-1" title="Edit Employee">Edit</a>
-                                    <a asp-page="/EmployeesFolder/DeleteEmployee" asp-route-id="@employee.Id" class="btn btn-danger btn-sm" title="Delete Employee">Delete</a>
+                                <td>
+                                    @if (employee.Company != null)
+                                    {
+                                        <a asp-page="/CompaniesFolder/ViewEmployees" asp-route-companyId="@employee.Company.Id">
+                                            @employee.Company.Name
+                                        </a>
+                                    }
+                                </td>
+                                <td style="white-space: nowrap;">
+                                    <a asp-page="/EmployeesFolder/UpdateEmployee" asp-route-id="@employee.Id" class="btn bg-button2 btn-sm me-1">Edit</a>
+                                    <!-- 👇 Clarify it's a soft delete -->
+                                    <a asp-page="/EmployeesFolder/DeleteEmployee" asp-route-id="@employee.Id" class="btn btn-warning btn-sm">Archive</a>
                                 </td>
                             </tr>
                         }
@@ -63,7 +92,12 @@
         <nav aria-label="Employee pagination">
             <ul class="pagination justify-content-center mt-4">
                 <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
-                    <a class="page-link" asp-page="/Employees" asp-route-pageNumber="@(Model.PageNumber - 1)" asp-route-sortOrder="@Model.SortOrder" aria-label="Previous">
+                    <a class="page-link"
+                       asp-page="/Employees"
+                       asp-route-pageNumber="@(Model.PageNumber - 1)"
+                       asp-route-sortOrder="@Model.SortOrder"
+                       asp-route-SearchTerm="@Model.SearchTerm"
+                       aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
@@ -71,12 +105,21 @@
                 @for (int i = 1; i <= Model.TotalPages; i++)
                 {
                     <li class="page-item @(Model.PageNumber == i ? "active" : "")">
-                        <a class="page-link" asp-page="/Employees" asp-route-pageNumber="@i" asp-route-sortOrder="@Model.SortOrder">@i</a>
+                        <a class="page-link"
+                           asp-page="/Employees"
+                           asp-route-pageNumber="@i"
+                           asp-route-sortOrder="@Model.SortOrder"
+                           asp-route-SearchTerm="@Model.SearchTerm">@i</a>
                     </li>
                 }
 
                 <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
-                    <a class="page-link" asp-page="/Employees" asp-route-pageNumber="@(Model.PageNumber + 1)" asp-route-sortOrder="@Model.SortOrder" aria-label="Next">
+                    <a class="page-link"
+                       asp-page="/Employees"
+                       asp-route-pageNumber="@(Model.PageNumber + 1)"
+                       asp-route-sortOrder="@Model.SortOrder"
+                       asp-route-SearchTerm="@Model.SearchTerm"
+                       aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>

@@ -6,7 +6,23 @@
 
 <h1 class="mb-4">Companies</h1>
 
-<a asp-page="/CompaniesFolder/CreateCompany" class="btn btn-success mb-4">Add New Company</a>
+<a asp-page="/CompaniesFolder/CreateCompany" class="btn bg-button mb-4">Add New Company</a>
+<a asp-page="/CompaniesFolder/RestoreCompany" class="btn bg-button2 mb-4">Archived Companies</a>
+
+
+
+<form method="get" class="mb-3 d-flex align-items-center">
+    <input type="text"
+           name="SearchTerm"
+           value="@Model.SearchTerm"
+           class="form-control me-2"
+           style="max-width: 250px;"
+           placeholder="Search company..." />
+
+    <button type="submit" class="btn bg-button2 me-2">Search</button>
+
+    <a asp-page="/Companies" class="btn btn-secondary">Clear</a>
+</form>
 
 <!-- Sort Buttons -->
 <div class="mb-3">
@@ -34,7 +50,7 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Website</th>
-                            <th class="text-end">Actions</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,10 +70,10 @@
                                         @company.Website
                                     </a>
                                 </td>
-                                <td class="text-end" style="white-space: nowrap;">
+                                <td style="white-space: nowrap;">
                                     <a asp-page="/CompaniesFolder/ViewEmployees" asp-route-companyId="@company.Id" class="btn btn-info btn-sm me-1" title="View Employees">View Employees</a>
-                                    <a asp-page="/CompaniesFolder/UpdateCompany" asp-route-id="@company.Id" class="btn btn-primary btn-sm me-1" title="Edit Company">Edit</a>
-                                    <a asp-page="/CompaniesFolder/DeleteCompany" asp-route-id="@company.Id" class="btn btn-danger btn-sm" title="Delete Company">Delete</a>
+                                    <a asp-page="/CompaniesFolder/UpdateCompany" asp-route-id="@company.Id" class="btn bg-button2 btn-sm me-1" title="Edit Company">Edit</a>
+                                    <a asp-page="/CompaniesFolder/DeleteCompany" asp-route-id="@company.Id" class="btn btn-warning btn-sm" title="Delete Company">Archive</a>
                                 </td>
                             </tr>
                         }

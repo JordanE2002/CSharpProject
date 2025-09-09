@@ -29,7 +29,8 @@ namespace CSharpProject.Pages.CompaniesFolder
                 return RedirectToPage("/Companies");
             }
 
-            HasEmployees = _context.Employees.Any(e => e.CompanyId == Company.Id);
+            // Check if company has active (non-archived) employees
+            HasEmployees = _context.Employees.Any(e => e.CompanyId == Company.Id && !e.IsDeleted);
             return Page();
         }
 
@@ -41,16 +42,18 @@ namespace CSharpProject.Pages.CompaniesFolder
                 return RedirectToPage("/Companies");
             }
 
-            var hasEmployees = _context.Employees.Any(e => e.CompanyId == company.Id);
+            // Block delete if still has active employees
+            var hasEmployees = _context.Employees.Any(e => e.CompanyId == company.Id && !e.IsDeleted);
             if (hasEmployees)
             {
-                ModelState.AddModelError(string.Empty, "Cannot delete this company while it has assigned employees. Please remove or reassign them first.");
-                Company = company; // Rebind to show on form again
+                ViewData["ErrorMessage"] = "Cannot delete this company while it has active employees. Please reassign or remove them first.";
+                Company = company;
                 HasEmployees = true;
                 return Page();
             }
 
-            _context.Companies.Remove(company);
+            // Soft delete
+            company.IsDeleted = true;
             await _context.SaveChangesAsync();
 
             return RedirectToPage("/Companies");

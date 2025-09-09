@@ -21,7 +21,9 @@ namespace CSharpProject.Models
         public string Website { get; set; }
 
         [ValidateNever]
-     
+
+        // ✅ Soft delete flag
+        public bool IsDeleted { get; set; } = false;
         public IList<Employee> Employees { get; set; } = new List<Employee>();
 
     }

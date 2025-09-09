@@ -37,7 +37,8 @@ namespace CSharpProject.Pages.EmployeesFolder
                 return RedirectToPage("/Employees");
             }
 
-            _context.Employees.Remove(employee);
+            //Soft delete instead of hard delete
+            employee.IsDeleted = true;
             await _context.SaveChangesAsync();
 
             return RedirectToPage("/Employees");

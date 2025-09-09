@@ -4,13 +4,6 @@
     ViewData["Title"] = "Employees";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="mb-0">Employees</h1>
-    <a asp-page="/EmployeesFolder/CreateEmployee" asp-route-companyId="@Model.CompanyId" class="btn btn-primary">
-        + Create Employee
-    </a>
-</div>
-
 @if (Model.Employees != null && Model.Employees.Any())
 {
     <table class="table table-striped">
@@ -20,6 +13,7 @@
                 <th>Last Name</th>
                 <th>Email</th>
                 <th>Phone Number</th>
+                <th>Actions</th> 
             </tr>
         </thead>
         <tbody>
@@ -30,6 +24,22 @@
                     <td>@emp.LastName</td>
                     <td>@emp.Email</td>
                     <td>@emp.PhoneNumber</td>
+                    <td>
+                        <a asp-page="/EmployeesFolder/UpdateEmployee"
+                           asp-route-id="@emp.Id"
+                           class="btn bg-button2 btn-sm me-1">
+                            Edit
+                        </a>
+
+                        <a asp-page="/EmployeesFolder/DeleteEmployee"
+                           asp-route-id="@emp.Id"
+                           class="btn btn-danger btn-sm me-1">
+                            Delete
+                        </a>
+
+                        
+                    </td>
+
                 </tr>
             }
         </tbody>
@@ -40,4 +50,4 @@ else
     <p><em>No employees found for this company.</em></p>
 }
 
-<a asp-page="/Companies" class="btn btn-secondary mt-3">Back to Companies</a>
+<a asp-page="/Companies" class="btn bg-button mt-3">Back to Companies</a>

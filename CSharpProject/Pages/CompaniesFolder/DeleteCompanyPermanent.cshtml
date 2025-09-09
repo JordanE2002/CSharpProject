@@ -1,0 +1,51 @@
+﻿@page "{id:int}"
+@model CSharpProject.Pages.CompaniesFolder.DeleteCompanyPermanentModel
+@{
+    ViewData["Title"] = "Permanently Delete Company";
+}
+
+<div class="container mt-5">
+    <h1 class="display-5 mb-3">Permanently Delete Company</h1>
+    <h5 class="text-danger mb-4"> This action cannot be undone.</h5>
+
+    <div class="card shadow-sm border-danger">
+        <div class="card-header bg-danger text-white">
+            Company Details
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th>Name</th>
+                    <td>@Model.Company.Name</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>@Model.Company.Email</td>
+                </tr>
+                <tr>
+                    <th>Website</th>
+                    <td>
+                        <a href="@Model.Company.Website" target="_blank" rel="noopener noreferrer">
+                            @Model.Company.Website
+                        </a>
+                    </td>
+                </tr>
+            </table>
+
+            @if (Model.HasEmployees)
+            {
+                <div class="alert alert-warning mt-4">
+                    <span>
+                        This company still has employees. They will also be permanently deleted.
+                    </span>
+                </div>
+            }
+
+            <form method="post" class="d-flex justify-content-end gap-2 mt-4">
+                <input type="hidden" asp-for="Company.Id" />
+                <a asp-page="/CompaniesFolder/RestoreCompany" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-danger">Confirm Permanent Delete</button>
+            </form>
+        </div>
+    </div>
+</div>

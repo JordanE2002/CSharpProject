@@ -1,0 +1,86 @@
+﻿@page
+@model CSharpProject.Pages.EmployeesFolder.RestoreEmployeeModel
+@{
+    ViewData["Title"] = "Restore Archived Employees";
+}
+
+<h1>Restore Archived Employees</h1>
+
+<a asp-page="/Employees" class="btn bg-button2 mb-3">Back to Employee home</a>
+
+@if (TempData["RestoreMessage"] != null)
+{
+    <div class="alert alert-info">
+        @TempData["RestoreMessage"]
+    </div>
+}
+
+@if (!Model.ArchivedEmployees.Any())
+{
+    <p><em>No archived employees found.</em></p>
+}
+else
+{
+    <div class="card shadow-sm bg-card mb-4">
+        <div class="card-body p-3">
+            <div class="table-responsive">
+                <table class="table table-sm table-hover table-bordered align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Company</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var employee in Model.ArchivedEmployees)
+                        {
+                            <tr>
+                                <td>@employee.FirstName @employee.LastName</td>
+                                <td>@employee.Email</td>
+                                <td>@employee.PhoneNumber</td>
+                                <td>
+                                    @if (employee.Company != null)
+                                    {
+                                        @employee.Company.Name
+                                        @if (employee.Company.IsDeleted)
+                                        {
+                                            <span class="text-muted">(Deleted)</span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <em>No company</em>
+                                    }
+                                </td>
+                                <td class="d-flex gap-2">
+                                    @if (employee.Company != null && !employee.Company.IsDeleted)
+                                    {
+                                        <!-- Restore button -->
+                                        <form method="post" asp-page-handler="Restore" class="m-0">
+                                            <input type="hidden" name="id" value="@employee.Id" />
+                                            <button type="submit" class="btn btn-success btn-sm">Restore</button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-danger">Cannot restore</span>
+                                    }
+
+                                    <!-- Permanent Delete button (always red) -->
+                                    <a asp-page="/EmployeesFolder/DeleteEmployeePermanent"
+                                       asp-route-id="@employee.Id"
+                                       class="btn btn-danger btn-sm">
+                                        Permanent Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}

@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using CSharpProject.Data;
 using CSharpProject.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System;
 
@@ -13,8 +13,7 @@ namespace CSharpProject.Pages
     public class CompaniesModel : PageModel
     {
         private readonly ApplicationDbContext _context;
-
-        private const int PageSize = 6; // items per page
+        private const int PageSize = 6;
 
         public CompaniesModel(ApplicationDbContext context)
         {
@@ -29,29 +28,41 @@ namespace CSharpProject.Pages
         [BindProperty(SupportsGet = true)]
         public int PageNumber { get; set; } = 1;
 
+        [BindProperty(SupportsGet = true)]
+        public string SearchTerm { get; set; } // ✅ Added search term
+
         public int TotalPages { get; set; }
 
         public async Task OnGetAsync()
         {
-            IQueryable<Company> companiesQuery = _context.Companies;
+            IQueryable<Company> query = _context.Companies
+                 .Where(c => !c.IsDeleted);
 
+            // ✅ Search filter
+            if (!string.IsNullOrWhiteSpace(SearchTerm))
+            {
+                string lowerSearch = SearchTerm.ToLower();
+                query = query.Where(c => c.Name.ToLower().Contains(lowerSearch));
+            }
+
+            // Sorting
             switch (SortOrder)
             {
                 case "name_desc":
-                    companiesQuery = companiesQuery.OrderByDescending(c => c.Name);
+                    query = query.OrderByDescending(c => c.Name);
                     break;
                 default:
-                    companiesQuery = companiesQuery.OrderBy(c => c.Name);
+                    query = query.OrderBy(c => c.Name);
                     break;
             }
 
-            int totalCompanies = await companiesQuery.CountAsync();
+            int totalCompanies = await query.CountAsync();
             TotalPages = (int)Math.Ceiling(totalCompanies / (double)PageSize);
 
             if (PageNumber < 1) PageNumber = 1;
             if (PageNumber > TotalPages) PageNumber = TotalPages;
 
-            Companies = await companiesQuery
+            Companies = await query
                 .Skip((PageNumber - 1) * PageSize)
                 .Take(PageSize)
                 .ToListAsync();

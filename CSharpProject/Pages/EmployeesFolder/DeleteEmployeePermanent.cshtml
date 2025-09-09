@@ -1,0 +1,62 @@
+﻿@page "{id:int}"
+@model CSharpProject.Pages.EmployeesFolder.DeleteEmployeePermanentModel
+@{
+    ViewData["Title"] = "Permanently Delete Employee";
+}
+
+<div class="container mt-5">
+    <h1 class="display-5 mb-3">Permanently Delete Employee</h1>
+    <h5 class="text-danger mb-4">
+        This action cannot be undone. The employee will be permanently deleted.
+    </h5>
+
+    <div class="card shadow-sm border-danger">
+        <div class="card-header bg-danger text-white">
+            Employee Details
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th>First Name</th>
+                    <td>@Model.Employee.FirstName</td>
+                </tr>
+                <tr>
+                    <th>Last Name</th>
+                    <td>@Model.Employee.LastName</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>@Model.Employee.Email</td>
+                </tr>
+                <tr>
+                    <th>Phone</th>
+                    <td>@Model.Employee.PhoneNumber</td>
+                </tr>
+                <tr>
+                    <th>Company</th>
+                    <td>
+                        @if (Model.Employee.Company != null)
+                        {
+                            @Model.Employee.Company.Name
+                            @if (Model.Employee.Company.IsDeleted)
+                            {
+                                <span class="text-muted">(Archived)</span>
+                            }
+                        }
+                        else
+                        {
+                            <em>No company</em>
+                        }
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Confirm permanent delete -->
+            <form method="post" class="d-flex justify-content-end gap-2 mt-4">
+                <input type="hidden" asp-for="Employee.Id" />
+                <a asp-page="/EmployeesFolder/RestoreEmployee" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-danger">Confirm Permanent Delete</button>
+            </form>
+        </div>
+    </div>
+</div>

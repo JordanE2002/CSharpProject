@@ -1,0 +1,52 @@
+﻿@page
+@model CSharpProject.Pages.CompaniesFolder.RestoreCompanyModel
+@{
+    ViewData["Title"] = "Restore Company";
+}
+
+<h1>Restore Companies</h1>
+
+<a asp-page="/Companies" class="btn bg-button2 mb-3">Back to Company home</a>
+
+@if (Model.Companies.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Website</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var company in Model.Companies)
+            {
+                <tr>
+                    <td>@company.Name</td>
+                    <td>@company.Email</td>
+                    <td>@company.Website</td>
+                    <td class="d-flex gap-2">
+                        <!-- Restore button -->
+                        <form method="post" asp-page-handler="Restore">
+                            <input type="hidden" name="id" value="@company.Id" />
+                            <button type="submit" class="btn btn-success btn-sm">Restore</button>
+                        </form>
+
+                        <!-- Permanent delete button -->
+                        <a asp-page="/CompaniesFolder/DeleteCompanyPermanent"
+                           asp-route-id="@company.Id"
+                           class="btn btn-danger btn-sm">
+                            Delete Permanently
+                        </a>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p><em>No deleted companies.</em></p>
+}

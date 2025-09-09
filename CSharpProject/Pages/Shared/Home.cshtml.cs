@@ -23,7 +23,7 @@ namespace CSharpProject.Pages
         public async Task OnGetAsync()
         {
             LatestCompanies = await _context.Companies
-                .OrderByDescending(c => c.Id)  // Or CreatedDate if you have it
+                .OrderByDescending(c => c.Id)  // Or CreatedDate if have it
                 .Take(5)
                 .AsNoTracking()
                 .ToListAsync();

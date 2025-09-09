@@ -21,7 +21,7 @@ html {
 
 body {
     margin-bottom: 60px;
-    background-color: #0ABAB5
+    background-color: #CFF7F4
 }
 
 
@@ -36,32 +36,37 @@ body {
 }
 
 
+/* Button 1 (Primary) */
 .bg-button {
-    background-color: #56DFCF !important;
-    border-color: ##0ABAB5 !important;
+    background-color: #56DFCF !important; /* normal */
+    border-color: #0ABAB5 !important;
     color: black;
+    transition: background-color 0.3s, border-color 0.3s;
 }
 
     .bg-button:hover,
     .bg-button:focus {
-        background-color: #0ABAB5 !important; /* a darker shade on hover */
+        background-color: #0ABAB5 !important; /* hover */
         border-color: #56DFCF !important;
         color: black;
     }
 
-
+/* Button 2 (Secondary) */
 .bg-button2 {
-    background-color: #ADEED9 !important;
-    border-color: #0ABAB5 !important;
+    background-color: #0ABAB5 !important; /* now matches Button 1 hover */
+    border-color: #56DFCF !important;
     color: black;
+    transition: background-color 0.3s, border-color 0.3s;
 }
 
     .bg-button2:hover,
     .bg-button2:focus {
-        background-color: #ADEED9 !important; /* a darker shade on hover */
-        border-color: #56DFCF !important;
+        background-color: #56DFCF !important; /* now matches Button 1 normal */
+        border-color: #0ABAB5 !important;
         color: black;
     }
+
+
 
     table {
   background-color: white; /* keep it clean */
